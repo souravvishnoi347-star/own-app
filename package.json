@@ -1,15 +1,13 @@
 {
   "name": "hostbolt-command-center",
   "version": "1.0.0",
-  "description": "Hostbolt Agency Command Center - Android & Web App",
+  "description": "Hostbolt Agency Command Center",
   "scripts": {
-    "start": "node server/local-server.js",
+    "build": "echo 'Static build complete'",
+    "local": "node server/local-server.js",
     "cap:sync": "npx cap sync android",
     "cap:open": "npx cap open android"
   },
-  "keywords": ["agency", "android", "crm", "hostbolt"],
-  "author": "Sourabh Vishnoi & Antigravity",
-  "license": "ISC",
   "dependencies": {
     "@capacitor/android": "^6.1.2",
     "@capacitor/cli": "^6.1.2",
