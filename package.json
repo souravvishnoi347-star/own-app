@@ -2,8 +2,8 @@
   "name": "hostbolt-command-center",
   "version": "1.0.0",
   "description": "Hostbolt Agency Command Center - Android & Web App",
-  "main": "server.js",
   "scripts": {
+    "build": "echo 'Static site ready'",
     "start": "node server.js",
     "cap:sync": "npx cap sync android",
     "cap:open": "npx cap open android"

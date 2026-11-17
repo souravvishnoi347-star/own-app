@@ -1,30 +1,59 @@
 // Hostbolt Command Center - Co-Founder App Client Logic
 // Built to match official Nexus AI design system (Inter font, Royal Blue #2B63EB, Luxury Cards)
 
-let state = {
+const DEFAULT_STATE = {
   goal: {
     targetUsd: 5000,
     targetInr: 420000,
+    startDate: "2026-11-16",
+    endDate: "2027-01-15",
     collectedInr: 112000
   },
   copilot: {
     name: "Nexus AI Copilot",
     status: "Online & Active",
+    isAutonomous: true,
     currentMission: "Cross-referencing client deliverables, Trovenza fleet calculator & preparing automated sprint reports.",
     accuracy: "99.4%",
     runsExecutedToday: 18,
     tokenLatency: "240ms"
   },
-  todayFocus: [],
-  contentPipeline: [],
-  projects: [],
-  payments: []
+  todayFocus: [
+    { id: "tf-1", title: "Deploy Taxi Fare Engine & Fleet for Trovenza", tag: "Client Retainer", tagColor: "blue", due: "Today, 4:00 PM", completed: false },
+    { id: "tf-2", title: "Review carousel hooks & render video reels", tag: "Instagram", tagColor: "purple", due: "Today, 6:30 PM", completed: false },
+    { id: "tf-3", title: "Finalize Talib Bhai Rajaji Safari Ads Landing Page", tag: "Business", tagColor: "indigo", due: "Tomorrow, 11:00 AM", completed: false },
+    { id: "tf-4", title: "Draft script for AI automation video", tag: "Faceless YT", tagColor: "amber", due: "Tomorrow, 2:00 PM", completed: false },
+    { id: "tf-5", title: "Audit Hostbolt server telemetry & 24/7 uptime SLA", tag: "Business", tagColor: "emerald", due: "Nov 20", completed: true },
+    { id: "tf-6", title: "Schedule batch upload for Shorts channel #2", tag: "Faceless YT", tagColor: "amber", due: "Nov 22", completed: false }
+  ],
+  contentPipeline: [
+    { id: "cp-1", channel: "Faceless YT", brand: "AI Automations Lab", status: "Editing", title: "10 AI Tools Replacing Software Engineers in 2026", due: "Due Tomorrow, 5:00 PM", scriptPct: 100, voicePct: 100, editPct: 40, totalPct: 80, duration: "10:02", icon: "video" },
+    { id: "cp-2", channel: "Instagram", brand: "@growthops.daily", status: "Scheduled", title: "3 Psychology Tricks to Double Agency Retainers", due: "Today, 8:00 PM (Auto-publish)", scriptPct: 100, voicePct: 100, editPct: 100, totalPct: 100, badge: "Asset sync ready - Reel & Audio synced", icon: "instagram" },
+    { id: "cp-3", channel: "Personal Brand", brand: "Sourav's Brand", status: "Scripting", title: "My $50k/mo Solopreneur Tech Stack Breakdown", due: "Due Nov 22, 10:00 AM", scriptPct: 60, voicePct: 0, editPct: 0, totalPct: 35, badge: "Draft outline - Hook validation complete", icon: "mic" },
+    { id: "cp-4", channel: "Faceless YT", brand: "AI Automations Lab", status: "Review", title: "Automating Lead Gen with Make.com & Claude 3.5", due: "Target: Nov 24, 2:00 PM", scriptPct: 100, voicePct: 100, editPct: 85, totalPct: 92, duration: "14:18", icon: "play-square" }
+  ],
+  projects: [
+    { id: "proj-1", name: "Trovenza Travels Portal", client: "Trovenza Travels Pvt Ltd", type: "Client Retainer", statusBadge: "On Track", progress: 75, nextMilestone: "Finalize Taxi Fare Engine, Fleet Showcase & Staging Smoke Tests", dealValue: 28000, collected: 7000, pending: 21000, tasksRemaining: 4, team: ["SV", "AG"], status: "in-progress" },
+    { id: "proj-2", name: "Rajaji National Park Safari", client: "Talib Bhai (Safari Team)", type: "Client Retainer", statusBadge: "Attention Req.", progress: 45, nextMilestone: "Client approval on Google Ads disclaimer & WhatsApp zone booking flow", dealValue: 30000, collected: 0, pending: 30000, tasksRemaining: 7, team: ["SV"], status: "planning" },
+    { id: "proj-3", name: "Nexus AI Workflow Engine", client: "Hostbolt Internal Infra", type: "Internal Infra", statusBadge: "Almost Done", progress: 90, nextMilestone: "Connect 24/7 Remote Webhook & GSAP Animation Skills", dealValue: 0, collected: 0, pending: 0, tasksRemaining: 2, team: ["SV", "AG", "NX"], status: "active" },
+    { id: "proj-4", name: "Rajnandini Boutique POS", client: "Indu Ji & Rajnandini Studio", type: "Delivered Client", statusBadge: "Delivered", progress: 100, nextMilestone: "Physical stock count reconciliation & non-working holiday patch", dealValue: 25000, collected: 25000, pending: 0, tasksRemaining: 1, team: ["SV", "AG"], status: "delivered" },
+    { id: "proj-5", name: "Hotel Aadvik Inn Check-In App", client: "Amit Sir (Hotel Aadvik)", type: "Client Retainer", statusBadge: "On Track", progress: 60, nextMilestone: "Contactless QR check-in & automated WhatsApp review flow", dealValue: 25000, collected: 10000, pending: 15000, tasksRemaining: 5, team: ["SV"], status: "in-progress" },
+    { id: "proj-6", name: "Urbanage Atelier Portfolio Portal", client: "Urbanage Atelier LLP", type: "SaaS Incubator", statusBadge: "Pipeline", progress: 20, nextMilestone: "Send customized WhatsApp audit pitch and architectural portfolio mockup", dealValue: 35000, collected: 0, pending: 35000, tasksRemaining: 8, team: ["SV"], status: "pipeline" }
+  ],
+  payments: [
+    { id: "pay-1", project: "Rajnandini Boutique POS", amount: 25000, mode: "UPI", date: "2026-10-15", status: "Verified" },
+    { id: "pay-2", project: "Trovenza Travels (Phase 1 Advance)", amount: 7000, mode: "Bank Transfer", date: "2026-10-18", status: "Verified" },
+    { id: "pay-3", project: "Hotel Aadvik Inn (Advance)", amount: 10000, mode: "UPI", date: "2026-10-25", status: "Verified" },
+    { id: "pay-4", project: "Hotel Satyam Swagat", amount: 25000, mode: "Cash & UPI", date: "2026-09-20", status: "Verified" }
+  ]
 };
 
+let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
 let currentProjectFilter = 'all';
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
+  renderAll();
   await loadData();
   switchTab('pulse');
   if (window.lucide) lucide.createIcons();
@@ -33,22 +62,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Load Data
 async function loadData() {
   try {
+    const cached = localStorage.getItem('hostbolt_command_center_data');
+    if (cached) {
+      state = Object.assign({}, DEFAULT_STATE, JSON.parse(cached));
+      renderAll();
+    }
+
     const res = await fetch('/api/data');
     if (res.ok) {
-      state = await res.json();
+      const serverData = await res.json();
+      state = Object.assign({}, DEFAULT_STATE, serverData);
       localStorage.setItem('hostbolt_command_center_data', JSON.stringify(state));
+      renderAll();
     }
   } catch (e) {
-    const cached = localStorage.getItem('hostbolt_command_center_data');
-    if (cached) state = JSON.parse(cached);
+    // Default data already rendered
   }
-  renderAll();
 }
 
 // Refresh telemetry
 async function refreshData() {
   await loadData();
-  logToTerminal('System telemetry refreshed from local daemon.');
+  logToTerminal('System telemetry refreshed.');
   if (window.lucide) lucide.createIcons();
 }
 
@@ -88,16 +123,25 @@ function renderPulse() {
   const content = state.contentPipeline || [];
   const focus = state.todayFocus || [];
 
-  document.getElementById('stat-active-projects').innerText = projects.length || 8;
-  document.getElementById('stat-video-pipeline').innerText = (content.length * 3 + 2) || 14;
+  const statProjectsEl = document.getElementById('stat-active-projects');
+  if (statProjectsEl) statProjectsEl.innerText = projects.length || 8;
+
+  const statVideoEl = document.getElementById('stat-video-pipeline');
+  if (statVideoEl) statVideoEl.innerText = (content.length * 3 + 2) || 14;
   
   const pendingFocus = focus.filter(f => !f.completed).length;
-  document.getElementById('stat-pending-tasks').innerText = pendingFocus + 13;
-  document.getElementById('focus-count-badge').innerText = `${pendingFocus} Remaining`;
+  const statTasksEl = document.getElementById('stat-pending-tasks');
+  if (statTasksEl) statTasksEl.innerText = pendingFocus + 13;
+
+  const badgeTasksEl = document.getElementById('focus-count-badge');
+  if (badgeTasksEl) badgeTasksEl.innerText = `${pendingFocus} Remaining`;
 
   if (state.copilot) {
-    document.getElementById('copilot-mission').innerText = state.copilot.currentMission;
-    document.getElementById('copilot-runs').innerText = `${state.copilot.runsExecutedToday || 18} Runs`;
+    const missionEl = document.getElementById('copilot-mission');
+    if (missionEl) missionEl.innerText = state.copilot.currentMission;
+
+    const runsEl = document.getElementById('copilot-runs');
+    if (runsEl) runsEl.innerText = `${state.copilot.runsExecutedToday || 18} Runs`;
   }
 
   // Render Today's Focus List (Image 3)
@@ -178,7 +222,6 @@ function renderProjects() {
   }
 
   container.innerHTML = list.map(p => {
-    const isCompleted = p.progress === 100;
     const badgeColor = p.statusBadge === 'On Track' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
                        p.statusBadge === 'Attention Req.' ? 'bg-rose-50 text-rose-700 border-rose-200' :
                        p.statusBadge === 'Almost Done' ? 'bg-indigo-50 text-indigo-700 border-indigo-200' :
