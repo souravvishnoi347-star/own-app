@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "Hostbolt Agency Command Center - Android & Web App",
   "scripts": {
-    "build": "echo 'Static site ready'",
-    "start": "node server.js",
+    "start": "node server/local-server.js",
     "cap:sync": "npx cap sync android",
     "cap:open": "npx cap open android"
   },
